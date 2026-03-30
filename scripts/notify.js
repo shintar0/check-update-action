@@ -55,11 +55,30 @@ const options = {
 
 const req = https.request(options, (res) => {
   console.log(`Slack status: ${res.statusCode}`);
-  if (res.statusCode >= 400) {
-    console.error("Slack 通知に失敗しました。");
-    process.exit(1);
-  }
+
+  let body = "";
+  res.on("data", chunk => {
+    body += chunk;
+  });
+
+  res.on("end", () => {
+    if (res.statusCode >= 400) {
+      console.error("Slack 通知に失敗しました。");
+      console.error("Slack response:", body);
+      process.exit(1);
+    }
+
+    console.log("Slack 通知が完了しました。");
+    process.exit(0);
+  });
 });
+
+req.setTimeout(10000, () => {
+  console.error("Slack 通知がタイムアウトしました。");
+  req.destroy();
+  process.exit(1);
+});
+
 
 req.on("error", (err) => {
   console.error("Slack 通知エラー:", err);
