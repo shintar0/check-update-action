@@ -1,0 +1,21 @@
+{
+  "name": "check-update-action",
+  "version": "1.0.0",
+  "description": "check-update-action は、指定したパッケージマネージャ（現在は pnpm）を用いて依存パッケージの更新状況をチェックし、ホワイトリスト（YAML）によるフィルタリングや Slack 通知を行う GitHub Action です。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shintar0/check-update-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shintar0/check-update-action/issues"
+  },
+  "homepage": "https://github.com/shintar0/check-update-action#readme"
+}
