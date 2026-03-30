@@ -2,7 +2,8 @@ process.chdir(process.env.GITHUB_WORKSPACE);
 
 const fs = require("fs");
 const yaml = require("js-yaml");
-const minimatch = require("minimatch");
+const { minimatch } = require("minimatch");
+const mm = minimatch ?? require("minimatch").minimatch;
 
 const OUTDATED_FILE = "outdated.json";
 const FILTERED_FILE = "filtered.json";
@@ -56,7 +57,7 @@ function isWhitelisted(pkgName, latestVersion) {
     if (pattern === "*") return true;
 
     // minimatch のワイルドカード（例: "4.*.*", "4.1.*"）
-    if (minimatch(latestVersion, pattern)) return true;
+    if (mm(latestVersion, pattern)) return true;
   }
   return false;
 }
