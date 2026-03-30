@@ -41,6 +41,10 @@ if (whitelistPath && fs.existsSync(whitelistPath)) {
   }
 }
 
+console.log("=== Whitelist rules ===");
+console.log(whitelist);
+
+
 // パッケージが whitelist に該当するか判定
 function isWhitelisted(pkgName, latestVersion) {
   for (const rule of whitelist) {
