@@ -1,6 +1,6 @@
 {
   "name": "check-update-action",
-  "version": "1.0.0",
+  "version": "v1",
   "description": "check-update-action は、指定したパッケージマネージャ（現在は pnpm）を用いて依存パッケージの更新状況をチェックし、ホワイトリスト（YAML）によるフィルタリングや Slack 通知を行う GitHub Action です。",
   "main": "index.js",
   "scripts": {
