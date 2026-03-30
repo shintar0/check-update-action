@@ -1,0 +1,12 @@
+{
+  "name": "check-update-action-dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24",
+  "customizations": {
+		"vscode": {
+			"extensions": [
+				"seatonjiang.gitmoji-vscode",
+				"vscode-icons-team.vscode-icons"
+			]
+		}
+	}
+}
