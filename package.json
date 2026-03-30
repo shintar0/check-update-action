@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/shintar0/check-update-action/issues"
   },
-  "homepage": "https://github.com/shintar0/check-update-action#readme"
+  "homepage": "https://github.com/shintar0/check-update-action#readme",
+  "dependencies": {
+    "js-yaml": "^4.1.1",
+    "minimatch": "^10.2.4"
+  }
 }
