@@ -1,0 +1,71 @@
+name: "Check Update Action"
+description: "Check outdated packages using selected package manager, filter by whitelist, and optionally notify Slack."
+
+inputs:
+  manager:
+    description: "Package manager to use (e.g., pnpm)"
+    required: true
+
+  webhook_url:
+    description: "Slack Webhook URL for notifications"
+    required: false
+    default: ""
+
+  enable_slack:
+    description: "Enable Slack notification (true/false)"
+    required: false
+    default: "false"
+
+  whitelist_file:
+    description: "Path to whitelist YAML file"
+    required: false
+    default: ""
+
+  fail_on_update:
+    description: "Exit with code 1 if updates are found (true/false)"
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate manager
+      shell: bash
+      run: |
+        if [[ -z "${{ inputs.manager }}" ]]; then
+          echo "Error: manager is required."
+          exit 1
+        fi
+
+        if [[ "${{ inputs.manager }}" != "pnpm" ]]; then
+          echo "Error: Unsupported manager '${{ inputs.manager }}'."
+          echo "Currently supported: pnpm"
+          exit 1
+        fi
+
+    - name: Validate whitelist file
+      if: ${{ inputs.whitelist_file != '' }}
+      shell: bash
+      run: |
+        if [[ ! -f "${{ inputs.whitelist_file }}" ]]; then
+          echo "Error: whitelist file '${{ inputs.whitelist_file }}' not found."
+          exit 1
+        fi
+
+    - name: Run package manager script
+      shell: bash
+      run: bash ${{ github.action_path }}/managers/${{ inputs.manager }}.sh
+
+    - name: Filter outdated packages
+      shell: bash
+      env:
+        WHITELIST_FILE: ${{ inputs.whitelist_file }}
+        FAIL_ON_UPDATE: ${{ inputs.fail_on_update }}
+      run: node ${{ github.action_path }}/scripts/filter.js
+
+    - name: Notify Slack
+      if: ${{ inputs.enable_slack == 'true' && inputs.webhook_url != '' }}
+      shell: bash
+      env:
+        WEBHOOK_URL: ${{ inputs.webhook_url }}
+      run: node ${{ github.action_path }}/scripts/notify.js
