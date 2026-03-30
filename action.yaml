@@ -51,14 +51,16 @@ runs:
           echo "Error: whitelist file '${{ inputs.whitelist_file }}' not found."
           exit 1
         fi
-
     - name: Run package manager script
       shell: bash
+      env:
+        GITHUB_WORKSPACE: ${{ github.workspace }}
       run: bash ${{ github.action_path }}/managers/${{ inputs.manager }}.sh
 
     - name: Filter outdated packages
       shell: bash
       env:
+        GITHUB_WORKSPACE: ${{ github.workspace }}
         WHITELIST_FILE: ${{ inputs.whitelist_file }}
         FAIL_ON_UPDATE: ${{ inputs.fail_on_update }}
       run: node ${{ github.action_path }}/scripts/filter.js
@@ -67,5 +69,6 @@ runs:
       if: ${{ inputs.enable_slack == 'true' && inputs.webhook_url != '' }}
       shell: bash
       env:
+        GITHUB_WORKSPACE: ${{ github.workspace }}
         WEBHOOK_URL: ${{ inputs.webhook_url }}
       run: node ${{ github.action_path }}/scripts/notify.js
