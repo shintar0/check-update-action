@@ -15,7 +15,13 @@ console.log("=== Filtering outdated packages ===");
 // outdated.json を読み込み
 let outdated = [];
 try {
-  outdated = JSON.parse(fs.readFileSync(OUTDATED_FILE, "utf8"));
+  const raw = JSON.parse(fs.readFileSync(OUTDATED_FILE, "utf8"));
+
+  // pnpm outdated の出力はオブジェクトなので配列に変換
+  outdated = Object.entries(raw).map(([name, info]) => ({
+    name,
+    ...info,
+  }));
 } catch (e) {
   console.error(`Error: ${OUTDATED_FILE} が読み込めません。`);
   process.exit(1);
