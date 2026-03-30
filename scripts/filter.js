@@ -20,7 +20,9 @@ try {
   // pnpm outdated の出力はオブジェクトなので配列に変換
   outdated = Object.entries(raw).map(([name, info]) => ({
     name,
-    ...info,
+    current: info.current ?? "(unknown)",
+    latest: info.latest ?? "(unknown)",
+    wanted: info.wanted ?? "(unknown)",
   }));
 } catch (e) {
   console.error(`Error: ${OUTDATED_FILE} が読み込めません。`);
