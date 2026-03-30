@@ -46,6 +46,7 @@ runs:
     - name: Validate whitelist file
       if: ${{ inputs.whitelist_file != '' }}
       shell: bash
+      working-directory: ${{ github.workspace }}
       run: |
         if [[ ! -f "${{ inputs.whitelist_file }}" ]]; then
           echo "Error: whitelist file '${{ inputs.whitelist_file }}' not found."
