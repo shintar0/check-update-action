@@ -2,6 +2,9 @@
 
 set -e
 
+# 必ずユーザーのリポジトリに移動
+cd "$GITHUB_WORKSPACE"
+
 echo "=== Running pnpm outdated ==="
 
 # pnpm が存在するかチェック（存在しなければ異常終了）

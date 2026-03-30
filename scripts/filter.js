@@ -1,3 +1,5 @@
+process.chdir(process.env.GITHUB_WORKSPACE);
+
 const fs = require("fs");
 const yaml = require("js-yaml");
 const minimatch = require("minimatch");

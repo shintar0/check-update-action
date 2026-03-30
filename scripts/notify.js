@@ -1,3 +1,5 @@
+process.chdir(process.env.GITHUB_WORKSPACE);
+
 const fs = require("fs");
 const https = require("https");
 
