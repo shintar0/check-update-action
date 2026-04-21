@@ -18,13 +18,23 @@ let outdated = [];
 try {
   const raw = JSON.parse(fs.readFileSync(OUTDATED_FILE, "utf8"));
 
-  // pnpm outdated の出力はオブジェクトなので配列に変換
-  outdated = Object.entries(raw).map(([name, info]) => ({
-    name,
-    current: info.current ?? "(unknown)",
-    latest: info.latest ?? "(unknown)",
-    wanted: info.wanted ?? "(unknown)",
-  }));
+  if (Array.isArray(raw)) {
+    // bun outdated --json の出力は配列形式
+    outdated = raw.map((info) => ({
+      name: info.name,
+      current: info.current ?? "(unknown)",
+      latest: info.latest ?? "(unknown)",
+      wanted: info.update ?? info.wanted ?? "(unknown)",
+    }));
+  } else {
+    // pnpm outdated の出力はオブジェクトなので配列に変換
+    outdated = Object.entries(raw).map(([name, info]) => ({
+      name,
+      current: info.current ?? "(unknown)",
+      latest: info.latest ?? "(unknown)",
+      wanted: info.wanted ?? info.update ?? "(unknown)",
+    }));
+  }
 } catch (e) {
   console.error(`Error: ${OUTDATED_FILE} が読み込めません。`);
   process.exit(1);

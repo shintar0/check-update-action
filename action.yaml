@@ -3,7 +3,7 @@ description: "Check outdated packages using selected package manager, filter by 
 
 inputs:
   manager:
-    description: "Package manager to use (e.g., pnpm)"
+    description: "Package manager to use (pnpm or bun)"
     required: true
 
   webhook_url:
@@ -38,9 +38,9 @@ runs:
           exit 1
         fi
 
-        if [[ "${{ inputs.manager }}" != "pnpm" ]]; then
+        if [[ "${{ inputs.manager }}" != "pnpm" && "${{ inputs.manager }}" != "bun" ]]; then
           echo "Error: Unsupported manager '${{ inputs.manager }}'."
-          echo "Currently supported: pnpm"
+          echo "Currently supported: pnpm, bun"
           exit 1
         fi
 
