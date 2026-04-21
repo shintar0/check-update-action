@@ -1,6 +1,6 @@
 # 📦 check-update-action
 
-check-update-action は、指定したパッケージマネージャ（現在は pnpm）を用いて依存パッケージの更新状況をチェックし、ホワイトリスト（YAML）によるフィルタリングや Slack 通知を行う GitHub Action です。
+check-update-action は、指定したパッケージマネージャ（pnpm / bun）を用いて依存パッケージの更新状況をチェックし、ホワイトリスト（YAML）によるフィルタリングや Slack 通知を行う GitHub Action です。
 
 - 更新対象の抽出
 - ホワイトリストによる除外
@@ -11,7 +11,7 @@ check-update-action は、指定したパッケージマネージャ（現在は
 
 ## ✨ Features
 
-- 🔍 パッケージの更新状況をチェック（現在は pnpm のみ対応）
+- 🔍 パッケージの更新状況をチェック（pnpm / bun 対応）
 - 🧹 ホワイトリスト（YAML）で除外ルールを柔軟に設定
 - 📣 Slack 通知に対応（任意）
 - 🚨 更新があれば CI を失敗させるオプション
@@ -24,6 +24,7 @@ check-update-action/
 ├─ action.yaml
 ├─ managers/
 │   ├─ pnpm.sh
+│   ├─ bun.sh
 │   └─ pip.sh          # 将来追加予定
 ├─ scripts/
 │   ├─ filter.js
@@ -37,10 +38,10 @@ check-update-action/
 
 ### `manager`（必須）
 
-> 実行するパッケージマネージャ 現在サポートは`pnpm`のみ
+> 実行するパッケージマネージャ。`pnpm` または `bun` を指定してください。
 
 ```yaml
-manager: pnpm
+manager: pnpm  # または bun
 ```
 
 ### `webhook_url`（任意）
@@ -104,7 +105,7 @@ fail_on_update: true
     - whitelist_file が指定されていれば存在チェック
     - Slack 通知は enable_slack と webhook_url の両方が必要
 1. パッケージマネージャの実行
-    - pnpm outdated --json を実行し outdated.json を生成
+    - `pnpm outdated --json` または `bun outdated --json` を実行し outdated.json を生成
 1. ホワイトリストによるフィルタリング
     - scripts/filter.js が outdated.json と whitelist_file を読み込み
     - minimatch によるワイルドカード判定で除外
